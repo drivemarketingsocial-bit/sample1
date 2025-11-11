@@ -1,758 +1,1035 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Sun, Moon, ChevronDown, ChevronLeft, ChevronRight, Check, MapPin, Phone, Mail, Linkedin, Instagram, Twitter, Youtube, MessageCircle, Download, TrendingUp, Users, Target, Zap, ArrowRight, Star } from 'lucide-react';
-
-export default function DeepanshuVentures() {
-  const [darkMode, setDarkMode] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
-  const [openFaq, setOpenFaq] = useState(null);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
-  const [formStatus, setFormStatus] = useState(null);
-  const testimonialInterval = useRef(null);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('darkMode');
-    if (saved !== null) {
-      setDarkMode(saved === 'true');
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setDarkMode(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('darkMode', darkMode);
-    document.documentElement.classList.toggle('dark', darkMode);
-  }, [darkMode]);
-
-  useEffect(() => {
-    testimonialInterval.current = setInterval(() => {
-      setActiveTestimonial(prev => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(testimonialInterval.current);
-  }, []);
-
-  const scrollToSection = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    setMobileMenuOpen(false);
-  };
-
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    setFormStatus('success');
-    setTimeout(() => setFormStatus(null), 5000);
-    setFormData({ name: '', email: '', phone: '', message: '' });
-  };
-
-  const services = [
-    {
-      icon: <TrendingUp className="w-8 h-8" />,
-      title: "Social Media Marketing",
-      description: "Transform your social presence into a revenue-generating machine with data-driven campaigns.",
-      benefits: [
-        "Platform-specific content strategy",
-        "Performance analytics & optimization",
-        "Community management & engagement"
-      ]
-    },
-    {
-      icon: <Target className="w-8 h-8" />,
-      title: "Performance Advertising",
-      description: "ROI-focused ad campaigns across Meta, Google, and LinkedIn that deliver measurable results.",
-      benefits: [
-        "Creative testing & iteration",
-        "Advanced audience targeting",
-        "Real-time campaign optimization"
-      ]
-    },
-    {
-      icon: <Users className="w-8 h-8" />,
-      title: "Personal Branding",
-      description: "Build authority and trust with strategic positioning that attracts your ideal clients.",
-      benefits: [
-        "Thought leadership content",
-        "Brand voice & messaging",
-        "Multi-platform presence"
-      ]
-    },
-    {
-      icon: <Zap className="w-8 h-8" />,
-      title: "Growth Consulting",
-      description: "Strategic guidance to scale your business with proven frameworks and systems.",
-      benefits: [
-        "Marketing stack audit",
-        "Growth roadmap & milestones",
-        "Team training & enablement"
-      ]
-    }
-  ];
-
-  const caseStudies = [
-    {
-      client: "D2C Fashion Brand",
-      problem: "Low online visibility and inconsistent sales despite quality products",
-      approach: "Implemented Instagram-first strategy with influencer partnerships and performance ads",
-      outcome: "3.2x revenue growth in 6 months, 45% reduction in CAC"
-    },
-    {
-      client: "B2B SaaS Startup",
-      problem: "Struggling to generate qualified leads in competitive market",
-      approach: "LinkedIn thought leadership + targeted ad campaigns with ABM approach",
-      outcome: "Generated 180+ qualified leads, closed 12 enterprise deals"
-    },
-    {
-      client: "Local Service Business",
-      problem: "Relying on word-of-mouth, needed scalable customer acquisition",
-      approach: "Google Ads + Facebook lead gen with automated follow-up system",
-      outcome: "Achieved 5:1 ROAS, booked 90 days in advance consistently"
-    }
-  ];
-
-  const processSteps = [
-    { title: "Discovery", description: "Deep dive into your business, audience, and goals" },
-    { title: "Strategy", description: "Custom roadmap aligned with your growth objectives" },
-    { title: "Creation", description: "High-performing content and campaigns that convert" },
-    { title: "Launch", description: "Multi-channel execution with precision timing" },
-    { title: "Optimize", description: "Continuous testing and data-driven improvements" },
-    { title: "Scale", description: "Amplify what works to maximize your ROI" }
-  ];
-
-  const testimonials = [
-    {
-      quote: "Deepanshu transformed our social media from a cost center to our #1 revenue channel. His strategic approach and execution are world-class.",
-      author: "Priya Sharma",
-      role: "Founder, StyleNest",
-      rating: 5
-    },
-    {
-      quote: "Working with Deepanshu was a game-changer. He didn't just run ads—he built a complete growth system that scaled our business 4x in one year.",
-      author: "Rahul Mehta",
-      role: "CEO, TechFlow Solutions",
-      rating: 5
-    },
-    {
-      quote: "Finally, a marketer who understands both strategy and execution. Deepanshu delivered results that exceeded our most optimistic projections.",
-      author: "Anita Desai",
-      role: "Director, GreenLeaf Organics",
-      rating: 5
-    }
-  ];
-
-  const pricingTiers = [
-    {
-      name: "Starter",
-      price: "₹25,000",
-      period: "/month",
-      features: [
-        "2 social platforms",
-        "12 posts per month",
-        "Basic analytics",
-        "Email support",
-        "Monthly strategy call"
-      ],
-      cta: "Get Started"
-    },
-    {
-      name: "Growth",
-      price: "₹50,000",
-      period: "/month",
-      popular: true,
-      features: [
-        "4 social platforms",
-        "24 posts per month",
-        "Advanced analytics",
-        "Performance ads (₹20k budget)",
-        "Priority support",
-        "Bi-weekly strategy calls",
-        "Community management"
-      ],
-      cta: "Book a Call"
-    },
-    {
-      name: "Custom",
-      price: "Let's Talk",
-      period: "",
-      features: [
-        "Unlimited platforms",
-        "Custom content volume",
-        "Dedicated account manager",
-        "Enterprise analytics",
-        "Full-funnel campaigns",
-        "Weekly strategy sessions",
-        "Team training included"
-      ],
-      cta: "Schedule Discovery"
-    }
-  ];
-
-  const faqs = [
-    {
-      q: "What industries do you work with?",
-      a: "I specialize in D2C brands, B2B SaaS, professional services, and local businesses across India. My frameworks adapt to your specific market dynamics."
-    },
-    {
-      q: "How quickly can I expect results?",
-      a: "Initial traction typically shows in 30-45 days. Significant results (2-3x growth) usually manifest within 3-6 months with consistent execution."
-    },
-    {
-      q: "Do you require long-term contracts?",
-      a: "I offer flexible engagements starting at 3 months to allow for meaningful impact. Month-to-month available after initial period."
-    },
-    {
-      q: "What makes your approach different?",
-      a: "I focus on the 'Domino Effect'—finding the one strategic lever that cascades into multiple wins. It's about smart execution, not just more activity."
-    },
-    {
-      q: "Do you handle content creation?",
-      a: "Yes, full-service content strategy and creation across formats—copywriting, graphics, video direction, and more."
-    },
-    {
-      q: "What's your typical client engagement look like?",
-      a: "Most clients start with the Growth package, scaling to custom solutions as we prove ROI. I work with 8-10 clients at a time to ensure quality."
-    }
-  ];
-
-  const whatsappLink = "https://wa.me/919876543210?text=Hi%20Deepanshu%2C%20I'd%20like%20to%20discuss%20growth%20opportunities%20for%20my%20business.";
-
-  return (
-    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark bg-gray-900 text-white' : 'bg-white text-gray-900'}`}>
-      {/* Header */}
-      <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${darkMode ? 'bg-gray-900/95' : 'bg-white/95'} backdrop-blur-sm border-b ${darkMode ? 'border-gray-800' : 'border-gray-200'}`}>
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deepanshu Ventures</title>
+    <meta
+      name="description"
+      content="Strategic social media marketing and growth consulting services for ambitious businesses across India."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      window.tailwind = window.tailwind || {};
+      window.tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              'gray-750': '#2f2f2f'
+            }
+          }
+        }
+      };
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+  </head>
+  <body class="antialiased bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-900 dark:text-white">
+    <div class="min-h-screen">
+      <header
+        class="fixed top-0 w-full z-50 transition-all duration-300 backdrop-blur-sm border-b border-gray-200/80 bg-white/95 dark:border-gray-800/80 dark:bg-gray-900/95"
+      >
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between items-center h-16">
+            <div class="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               Deepanshu Ventures
             </div>
-            
-            <div className="hidden md:flex items-center space-x-8">
-              {['services', 'work', 'process', 'pricing', 'about', 'contact'].map(item => (
-                <button
-                  key={item}
-                  onClick={() => scrollToSection(item)}
-                  className={`capitalize hover:text-blue-600 transition-colors ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}
-                >
-                  {item}
-                </button>
-              ))}
+            <div class="hidden md:flex items-center space-x-8">
+              <button data-scroll="services" class="capitalize font-medium hover:text-blue-600 transition-colors">
+                services
+              </button>
+              <button data-scroll="work" class="capitalize font-medium hover:text-blue-600 transition-colors">
+                work
+              </button>
+              <button data-scroll="process" class="capitalize font-medium hover:text-blue-600 transition-colors">
+                process
+              </button>
+              <button data-scroll="pricing" class="capitalize font-medium hover:text-blue-600 transition-colors">
+                pricing
+              </button>
+              <button data-scroll="about" class="capitalize font-medium hover:text-blue-600 transition-colors">
+                about
+              </button>
+              <button data-scroll="contact" class="capitalize font-medium hover:text-blue-600 transition-colors">
+                contact
+              </button>
               <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                data-toggle-dark
+                class="p-2 rounded-lg hover:bg-gray-100 transition-colors dark:hover:bg-gray-800"
                 aria-label="Toggle dark mode"
+                type="button"
               >
-                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                <span class="block text-xl leading-none dark:hidden" aria-hidden="true">🌙</span>
+                <span class="hidden text-xl leading-none dark:block" aria-hidden="true">☀️</span>
               </button>
             </div>
-
-            <div className="md:hidden flex items-center space-x-2">
+            <div class="md:hidden flex items-center space-x-2">
               <button
-                onClick={() => setDarkMode(!darkMode)}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                data-toggle-dark
+                class="p-2 rounded-lg hover:bg-gray-100 transition-colors dark:hover:bg-gray-800"
                 aria-label="Toggle dark mode"
+                type="button"
               >
-                {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                <span class="block text-xl leading-none dark:hidden" aria-hidden="true">🌙</span>
+                <span class="hidden text-xl leading-none dark:block" aria-hidden="true">☀️</span>
               </button>
               <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                data-menu-toggle
+                class="p-2 rounded-lg hover:bg-gray-100 transition-colors dark:hover:bg-gray-800"
                 aria-label="Toggle menu"
+                type="button"
               >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                <span class="menu-icon block text-xl" aria-hidden="true">☰</span>
+                <span class="close-icon hidden text-xl" aria-hidden="true">✕</span>
               </button>
             </div>
           </div>
         </nav>
-
-        {mobileMenuOpen && (
-          <div className={`md:hidden ${darkMode ? 'bg-gray-900' : 'bg-white'} border-t ${darkMode ? 'border-gray-800' : 'border-gray-200'}`}>
-            <div className="px-4 py-4 space-y-3">
-              {['services', 'work', 'process', 'pricing', 'about', 'contact'].map(item => (
-                <button
-                  key={item}
-                  onClick={() => scrollToSection(item)}
-                  className="block w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 capitalize"
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </header>
-
-      {/* Hero */}
-      <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-            Building Brands That Sell.<br />
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Transforming Ideas Into Impact.
-            </span>
-          </h1>
-          <p className={`text-xl mb-8 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-            Strategic social media marketing & growth consulting for ambitious businesses in India.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold transition-all transform hover:scale-105 shadow-lg"
-            >
-              <MessageCircle className="w-5 h-5 mr-2" />
-              WhatsApp Me
-            </a>
+        <div
+          data-mobile-menu
+          class="hidden md:hidden border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900"
+        >
+          <div class="px-4 py-4 space-y-3">
             <button
-              onClick={() => scrollToSection('contact')}
-              className={`inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold transition-all ${
-                darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'
-              }`}
+              data-scroll="services"
+              class="block w-full text-left px-4 py-2 rounded-lg capitalize font-medium hover:bg-gray-100 dark:hover:bg-gray-800"
+              type="button"
             >
-              <Download className="w-5 h-5 mr-2" />
-              Download Profile
+              services
+            </button>
+            <button
+              data-scroll="work"
+              class="block w-full text-left px-4 py-2 rounded-lg capitalize font-medium hover:bg-gray-100 dark:hover:bg-gray-800"
+              type="button"
+            >
+              work
+            </button>
+            <button
+              data-scroll="process"
+              class="block w-full text-left px-4 py-2 rounded-lg capitalize font-medium hover:bg-gray-100 dark:hover:bg-gray-800"
+              type="button"
+            >
+              process
+            </button>
+            <button
+              data-scroll="pricing"
+              class="block w-full text-left px-4 py-2 rounded-lg capitalize font-medium hover:bg-gray-100 dark:hover:bg-gray-800"
+              type="button"
+            >
+              pricing
+            </button>
+            <button
+              data-scroll="about"
+              class="block w-full text-left px-4 py-2 rounded-lg capitalize font-medium hover:bg-gray-100 dark:hover:bg-gray-800"
+              type="button"
+            >
+              about
+            </button>
+            <button
+              data-scroll="contact"
+              class="block w-full text-left px-4 py-2 rounded-lg capitalize font-medium hover:bg-gray-100 dark:hover:bg-gray-800"
+              type="button"
+            >
+              contact
             </button>
           </div>
         </div>
-      </section>
+      </header>
 
-      {/* Trust Bar */}
-      <section className={`py-8 border-y ${darkMode ? 'border-gray-800 bg-gray-800/50' : 'border-gray-200 bg-gray-50'}`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center items-center gap-8 text-sm font-medium">
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-blue-600" />
-              <span>Rohtak</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-blue-600" />
-              <span>Gurugram</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-blue-600" />
-              <span>Delhi-NCR</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-blue-600" />
-              <span>All India</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Services */}
-      <section id="services" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Services That Drive Growth</h2>
-            <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              End-to-end marketing solutions for modern businesses
-            </p>
-          </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            {services.map((service, idx) => (
-              <div
-                key={idx}
-                className={`p-8 rounded-2xl transition-all hover:scale-105 ${
-                  darkMode ? 'bg-gray-800 hover:bg-gray-750' : 'bg-white hover:shadow-xl shadow-lg'
-                }`}
+      <main class="pt-32 pb-20 px-4 sm:px-6 lg:px-8" id="top">
+        <section class="max-w-6xl mx-auto mb-24 pb-6">
+          <div class="flex flex-col-reverse lg:flex-row items-center gap-12">
+            <div class="w-full lg:w-1/2 text-center lg:text-left">
+              <span
+                class="inline-flex items-center px-4 py-1.5 text-sm font-semibold bg-blue-100 text-blue-600 rounded-full"
               >
-                <div className="text-blue-600 mb-4">{service.icon}</div>
-                <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
-                <p className={`mb-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {service.description}
-                </p>
-                <ul className="space-y-3 mb-6">
-                  {service.benefits.map((benefit, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className={darkMode ? 'text-gray-300' : 'text-gray-700'}>{benefit}</span>
-                    </li>
-                  ))}
-                </ul>
+                🚀 Growth Partner for Ambitious Brands
+              </span>
+              <h1 class="mt-6 text-3xl sm:text-5xl font-extrabold leading-tight">
+                Build the Domino Effect:
+                <span class="block mt-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+                  Transforming Ideas Into Impact.
+                </span>
+              </h1>
+              <p class="text-xl mt-6 mb-10 text-gray-600 dark:text-gray-300">
+                Strategic social media marketing & growth consulting for ambitious businesses in India.
+              </p>
+              <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <a
-                  href={whatsappLink}
+                  href="https://wa.me/919876543210?text=Hi%20Deepanshu%2C%20I'd%20like%20to%20discuss%20growth%20opportunities%20for%20my%20business."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold"
+                  class="inline-flex items-center justify-center px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-semibold transition-all transform hover:scale-105 shadow-lg"
                 >
-                  Book a Call <ArrowRight className="w-4 h-4 ml-2" />
+                  💬 WhatsApp Me
                 </a>
+                <button
+                  data-scroll="contact"
+                  class="inline-flex items-center justify-center px-8 py-4 rounded-xl font-semibold transition-all bg-gray-100 hover:bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                  type="button"
+                >
+                  ⬇️ Download Profile
+                </button>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Case Studies */}
-      <section id="work" className={`py-20 px-4 sm:px-6 lg:px-8 ${darkMode ? 'bg-gray-800/50' : 'bg-gray-50'}`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Proven Results</h2>
-            <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              Real businesses, real growth
-            </p>
-          </div>
-          <div className="grid lg:grid-cols-3 gap-8">
-            {caseStudies.map((study, idx) => (
+            </div>
+            <div class="w-full lg:w-1/2">
               <div
-                key={idx}
-                className={`p-8 rounded-2xl ${darkMode ? 'bg-gray-900' : 'bg-white'} shadow-lg`}
+                class="relative mx-auto max-w-xs sm:max-w-sm lg:max-w-md overflow-hidden rounded-[2.5rem] border-[14px] border-white shadow-2xl dark:border-gray-900"
               >
-                <h3 className="text-xl font-bold mb-4">{study.client}</h3>
-                <div className="space-y-4">
-                  <div>
-                    <span className="text-sm font-semibold text-red-500 uppercase">Problem</span>
-                    <p className={`mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{study.problem}</p>
-                  </div>
-                  <div>
-                    <span className="text-sm font-semibold text-blue-500 uppercase">Approach</span>
-                    <p className={`mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{study.approach}</p>
-                  </div>
-                  <div>
-                    <span className="text-sm font-semibold text-green-500 uppercase">Outcome</span>
-                    <p className={`mt-1 font-semibold ${darkMode ? 'text-gray-200' : 'text-gray-900'}`}>{study.outcome}</p>
-                  </div>
+                <div
+                  class="pointer-events-none absolute inset-0 -z-10 rounded-[2.1rem] bg-gradient-to-br from-blue-500/30 via-purple-500/20 to-pink-500/30 blur-xl"
+                ></div>
+                <div class="relative rounded-[1.9rem] overflow-hidden bg-white dark:bg-gray-900">
+                  <img
+                    src="assets/images/deepanshu.png"
+                    alt="Deepanshu portrait"
+                    class="w-full h-full object-cover"
+                    loading="eager"
+                  />
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Process */}
-      <section id="process" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">The Domino Effect System</h2>
-            <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              Strategic marketing that creates cascading wins
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {processSteps.map((step, idx) => (
-              <div key={idx} className="text-center">
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-xl font-bold ${
-                  darkMode ? 'bg-blue-900 text-blue-300' : 'bg-blue-100 text-blue-600'
-                }`}>
-                  {idx + 1}
-                </div>
-                <h3 className="font-bold mb-2">{step.title}</h3>
-                <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {step.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className={`py-20 px-4 sm:px-6 lg:px-8 ${darkMode ? 'bg-gray-800/50' : 'bg-gray-50'}`}>
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Client Success Stories</h2>
-          </div>
-          <div className="relative">
-            <div className={`p-8 md:p-12 rounded-2xl ${darkMode ? 'bg-gray-900' : 'bg-white'} shadow-xl`}>
-              <div className="flex justify-center mb-4">
-                {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <blockquote className="text-xl md:text-2xl font-medium mb-6 text-center">
-                "{testimonials[activeTestimonial].quote}"
-              </blockquote>
-              <div className="text-center">
-                <div className="font-bold">{testimonials[activeTestimonial].author}</div>
-                <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {testimonials[activeTestimonial].role}
+                <div
+                  class="absolute -bottom-8 left-1/2 flex w-[92%] -translate-x-1/2 items-center gap-4 rounded-3xl bg-white/90 px-6 py-4 text-left shadow-xl backdrop-blur dark:bg-gray-900/90 sm:left-6 sm:w-auto sm:translate-x-0"
+                >
+                  <div class="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-purple-600 text-2xl font-extrabold text-white">
+                    4+
+                  </div>
+                  <div>
+                    <p class="text-sm font-semibold uppercase tracking-wide text-blue-600">Years of Experience</p>
+                    <p class="text-base font-semibold text-gray-900 dark:text-gray-100">Campaigns that build trust & revenue</p>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="flex justify-center gap-4 mt-8">
+          </div>
+        </section>
+
+        <section class="py-10 border-y border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-800/60 mb-20">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-wrap justify-center items-center gap-8 text-sm font-medium">
+              <div class="flex items-center gap-2">
+                📍<span>Rohtak</span>
+              </div>
+              <div class="flex items-center gap-2">
+                📍<span>Gurugram</span>
+              </div>
+              <div class="flex items-center gap-2">
+                📍<span>Delhi-NCR</span>
+              </div>
+              <div class="flex items-center gap-2">
+                🌐<span>All India</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="services" class="max-w-7xl mx-auto mb-20">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">Services That Drive Growth</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400">End-to-end marketing solutions for modern businesses</p>
+          </div>
+          <div class="grid md:grid-cols-2 gap-8">
+            <div class="p-8 rounded-2xl bg-white shadow-lg transition-all hover:shadow-2xl hover:scale-[1.02] dark:bg-gray-800">
+              <div class="text-4xl mb-4">📈</div>
+              <h3 class="text-2xl font-bold mb-3">Social Media Marketing</h3>
+              <p class="mb-6 text-gray-600 dark:text-gray-300">
+                Transform your social presence into a revenue-generating machine with data-driven campaigns.
+              </p>
+              <ul class="space-y-3 mb-6 text-left">
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Platform-specific content strategy</li>
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Performance analytics & optimization</li>
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Community management & engagement</li>
+              </ul>
+              <a
+                href="https://wa.me/919876543210?text=Hi%20Deepanshu%2C%20I'm%20interested%20in%20your%20social%20media%20marketing%20services."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center font-semibold text-blue-600 hover:text-blue-700"
+              >
+                Book a Call →
+              </a>
+            </div>
+            <div class="p-8 rounded-2xl bg-white shadow-lg transition-all hover:shadow-2xl hover:scale-[1.02] dark:bg-gray-800">
+              <div class="text-4xl mb-4">🎯</div>
+              <h3 class="text-2xl font-bold mb-3">Performance Advertising</h3>
+              <p class="mb-6 text-gray-600 dark:text-gray-300">
+                ROI-focused ad campaigns across Meta, Google, and LinkedIn that deliver measurable results.
+              </p>
+              <ul class="space-y-3 mb-6 text-left">
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Creative testing & iteration</li>
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Advanced audience targeting</li>
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Real-time campaign optimization</li>
+              </ul>
+              <a
+                href="https://wa.me/919876543210?text=Hi%20Deepanshu%2C%20I'm%20interested%20in%20your%20performance%20advertising%20services."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center font-semibold text-blue-600 hover:text-blue-700"
+              >
+                Book a Call →
+              </a>
+            </div>
+            <div class="p-8 rounded-2xl bg-white shadow-lg transition-all hover:shadow-2xl hover:scale-[1.02] dark:bg-gray-800">
+              <div class="text-4xl mb-4">🤝</div>
+              <h3 class="text-2xl font-bold mb-3">Personal Branding</h3>
+              <p class="mb-6 text-gray-600 dark:text-gray-300">
+                Build authority and trust with strategic positioning that attracts your ideal clients.
+              </p>
+              <ul class="space-y-3 mb-6 text-left">
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Thought leadership content</li>
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Brand voice & messaging</li>
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Multi-platform presence</li>
+              </ul>
+              <a
+                href="https://wa.me/919876543210?text=Hi%20Deepanshu%2C%20I'm%20interested%20in%20your%20personal%20branding%20services."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center font-semibold text-blue-600 hover:text-blue-700"
+              >
+                Book a Call →
+              </a>
+            </div>
+            <div class="p-8 rounded-2xl bg-white shadow-lg transition-all hover:shadow-2xl hover:scale-[1.02] dark:bg-gray-800">
+              <div class="text-4xl mb-4">⚡</div>
+              <h3 class="text-2xl font-bold mb-3">Growth Consulting</h3>
+              <p class="mb-6 text-gray-600 dark:text-gray-300">
+                Strategic guidance to scale your business with proven frameworks and systems.
+              </p>
+              <ul class="space-y-3 mb-6 text-left">
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Marketing stack audit</li>
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Growth roadmap & milestones</li>
+                <li class="flex items-start gap-2"><span class="mt-1">✅</span>Team training & enablement</li>
+              </ul>
+              <a
+                href="https://wa.me/919876543210?text=Hi%20Deepanshu%2C%20I'm%20interested%20in%20your%20growth%20consulting%20services."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center font-semibold text-blue-600 hover:text-blue-700"
+              >
+                Book a Call →
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="work"
+          class="max-w-7xl mx-auto mb-20 rounded-3xl bg-gray-50 p-10 shadow-inner dark:bg-gray-800/60"
+        >
+          <div class="text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">Proven Results</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400">Real businesses, real growth</p>
+          </div>
+          <div class="grid lg:grid-cols-3 gap-8">
+            <article class="p-8 rounded-2xl bg-white shadow-lg dark:bg-gray-900">
+              <h3 class="text-xl font-bold mb-4">D2C Fashion Brand</h3>
+              <div class="space-y-4 text-gray-600 dark:text-gray-300">
+                <div>
+                  <span class="text-sm font-semibold uppercase text-red-500">Problem</span>
+                  <p class="mt-1">Low online visibility and inconsistent sales despite quality products.</p>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold uppercase text-blue-500">Approach</span>
+                  <p class="mt-1">Instagram-first strategy with influencer partnerships and performance ads.</p>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold uppercase text-green-500">Outcome</span>
+                  <p class="mt-1 font-semibold text-gray-900 dark:text-gray-100">
+                    3.2x revenue growth in 6 months, 45% reduction in CAC.
+                  </p>
+                </div>
+              </div>
+            </article>
+            <article class="p-8 rounded-2xl bg-white shadow-lg dark:bg-gray-900">
+              <h3 class="text-xl font-bold mb-4">B2B SaaS Startup</h3>
+              <div class="space-y-4 text-gray-600 dark:text-gray-300">
+                <div>
+                  <span class="text-sm font-semibold uppercase text-red-500">Problem</span>
+                  <p class="mt-1">Struggling to generate qualified leads in a competitive market.</p>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold uppercase text-blue-500">Approach</span>
+                  <p class="mt-1">LinkedIn thought leadership with an ABM campaign and targeted ads.</p>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold uppercase text-green-500">Outcome</span>
+                  <p class="mt-1 font-semibold text-gray-900 dark:text-gray-100">
+                    Generated 180+ qualified leads and closed 12 enterprise deals.
+                  </p>
+                </div>
+              </div>
+            </article>
+            <article class="p-8 rounded-2xl bg-white shadow-lg dark:bg-gray-900">
+              <h3 class="text-xl font-bold mb-4">Local Service Business</h3>
+              <div class="space-y-4 text-gray-600 dark:text-gray-300">
+                <div>
+                  <span class="text-sm font-semibold uppercase text-red-500">Problem</span>
+                  <p class="mt-1">Relying on word-of-mouth with no scalable customer acquisition.</p>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold uppercase text-blue-500">Approach</span>
+                  <p class="mt-1">Google Ads, Facebook lead gen, and an automated follow-up system.</p>
+                </div>
+                <div>
+                  <span class="text-sm font-semibold uppercase text-green-500">Outcome</span>
+                  <p class="mt-1 font-semibold text-gray-900 dark:text-gray-100">
+                    Achieved 5:1 ROAS and booked operations 90 days in advance.
+                  </p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="process" class="max-w-7xl mx-auto mb-20">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">The Domino Effect System</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400">Strategic marketing that creates cascading wins</p>
+          </div>
+          <div class="grid md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-xl font-bold bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
+                1
+              </div>
+              <h3 class="font-bold mb-2">Discovery</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Deep dive into your business, audience, and goals.</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-xl font-bold bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
+                2
+              </div>
+              <h3 class="font-bold mb-2">Strategy</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Custom roadmap aligned with your growth objectives.</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-xl font-bold bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
+                3
+              </div>
+              <h3 class="font-bold mb-2">Creation</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">High-performing content and campaigns that convert.</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-xl font-bold bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
+                4
+              </div>
+              <h3 class="font-bold mb-2">Launch</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Multi-channel execution with precision timing.</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-xl font-bold bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
+                5
+              </div>
+              <h3 class="font-bold mb-2">Optimize</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Continuous testing and data-driven improvements.</p>
+            </div>
+            <div class="text-center">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center text-xl font-bold bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300">
+                6
+              </div>
+              <h3 class="font-bold mb-2">Scale</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Amplify what works to maximize your ROI.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="max-w-4xl mx-auto mb-20">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">Client Success Stories</h2>
+          </div>
+          <div class="relative">
+            <div class="p-8 md:p-12 rounded-2xl bg-white shadow-xl dark:bg-gray-900" data-testimonial>
+              <div class="flex justify-center mb-4 text-yellow-400 text-lg">★★★★★</div>
+              <blockquote class="text-xl md:text-2xl font-medium mb-6 text-center text-gray-900 dark:text-gray-100">
+                “Deepanshu transformed our social media from a cost center to our #1 revenue channel. His strategic approach and
+                execution are world-class.”
+              </blockquote>
+              <div class="text-center">
+                <div class="font-bold">Priya Sharma</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Founder, StyleNest</div>
+              </div>
+            </div>
+            <div class="hidden p-8 md:p-12 rounded-2xl bg-white shadow-xl dark:bg-gray-900" data-testimonial>
+              <div class="flex justify-center mb-4 text-yellow-400 text-lg">★★★★★</div>
+              <blockquote class="text-xl md:text-2xl font-medium mb-6 text-center text-gray-900 dark:text-gray-100">
+                “Working with Deepanshu was a game-changer. He built a complete growth system that scaled our business 4x in one
+                year.”
+              </blockquote>
+              <div class="text-center">
+                <div class="font-bold">Rahul Mehta</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">CEO, TechFlow Solutions</div>
+              </div>
+            </div>
+            <div class="hidden p-8 md:p-12 rounded-2xl bg-white shadow-xl dark:bg-gray-900" data-testimonial>
+              <div class="flex justify-center mb-4 text-yellow-400 text-lg">★★★★★</div>
+              <blockquote class="text-xl md:text-2xl font-medium mb-6 text-center text-gray-900 dark:text-gray-100">
+                “Finally, a marketer who understands both strategy and execution. Deepanshu delivered results beyond our most
+                optimistic projections.”
+              </blockquote>
+              <div class="text-center">
+                <div class="font-bold">Anita Desai</div>
+                <div class="text-sm text-gray-600 dark:text-gray-400">Director, GreenLeaf Organics</div>
+              </div>
+            </div>
+            <div class="flex justify-center gap-4 mt-10">
               <button
-                onClick={() => setActiveTestimonial((activeTestimonial - 1 + testimonials.length) % testimonials.length)}
-                className={`p-2 rounded-full ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-100'} shadow-lg transition-colors`}
+                data-prev-testimonial
+                class="p-2 rounded-full bg-white shadow-lg hover:bg-gray-100 transition-colors dark:bg-gray-800 dark:hover:bg-gray-700"
+                type="button"
                 aria-label="Previous testimonial"
               >
-                <ChevronLeft className="w-6 h-6" />
+                ←
               </button>
               <button
-                onClick={() => setActiveTestimonial((activeTestimonial + 1) % testimonials.length)}
-                className={`p-2 rounded-full ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-100'} shadow-lg transition-colors`}
+                data-next-testimonial
+                class="p-2 rounded-full bg-white shadow-lg hover:bg-gray-100 transition-colors dark:bg-gray-800 dark:hover:bg-gray-700"
+                type="button"
                 aria-label="Next testimonial"
               >
-                <ChevronRight className="w-6 h-6" />
+                →
               </button>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* About */}
-      <section id="about" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">About Deepanshu Yadav</h2>
+        <section id="pricing" class="max-w-7xl mx-auto mb-20">
+          <div class="text-center mb-16">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">Flexible Engagements</h2>
+            <p class="text-lg text-gray-600 dark:text-gray-400">Choose the plan that matches your growth goals</p>
           </div>
-          <div className={`p-8 md:p-12 rounded-2xl ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
-            <p className={`text-lg mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              I help ambitious businesses unlock exponential growth through strategic marketing and brand positioning. Based in Rohtak with clients across Delhi-NCR and India, I specialize in the "Domino Effect"—identifying the one strategic lever that cascades into multiple wins.
-            </p>
-            <p className={`text-lg mb-6 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              With a background in both agency-side execution and consulting, I bring a unique blend of strategic thinking and hands-on implementation. Whether you're a D2C brand looking to scale, a B2B company seeking qualified leads, or a founder building personal authority—I create marketing systems that deliver predictable, measurable growth.
-            </p>
-            <p className={`text-lg mb-8 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              My approach is simple: understand your business deeply, identify high-leverage opportunities, execute with precision, and optimize relentlessly. No fluff, no vanity metrics—just results that impact your bottom line.
-            </p>
-            <div className="flex justify-center gap-4">
-              <a href="https://linkedin.com/in/deepanshuyadav" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors">
-                <Linkedin className="w-6 h-6" />
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="relative p-8 rounded-2xl bg-white border border-gray-200 shadow-lg transition-transform hover:-translate-y-2 dark:bg-gray-800 dark:border-gray-700">
+              <h3 class="text-2xl font-bold mb-4 text-center">Starter</h3>
+              <div class="text-center mb-6">
+                <span class="text-4xl font-bold">₹25,000</span>
+                <span class="text-gray-500 ml-1">/month</span>
+              </div>
+              <ul class="space-y-3 mb-8 text-left text-gray-600 dark:text-gray-300">
+                <li>✅ 2 social platforms</li>
+                <li>✅ 12 posts per month</li>
+                <li>✅ Basic analytics</li>
+                <li>✅ Email support</li>
+                <li>✅ Monthly strategy call</li>
+              </ul>
+              <a
+                href="https://wa.me/919876543210?text=Hi%20Deepanshu%2C%20I'd%20like%20to%20start%20with%20the%20Starter%20plan."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block text-center w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all"
+              >
+                Get Started
               </a>
-              <a href="https://twitter.com/deepanshuyadav" target="_blank" rel="noopener noreferrer" className="p-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors">
-                <Twitter className="w-6 h-6" />
+            </div>
+            <div class="relative p-8 rounded-2xl bg-white border border-blue-600 shadow-2xl transition-transform hover:-translate-y-2 dark:bg-gray-800 dark:border-blue-500">
+              <span class="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 text-xs font-semibold uppercase tracking-wide bg-blue-600 text-white rounded-full shadow-lg">
+                Most Popular
+              </span>
+              <h3 class="text-2xl font-bold mb-4 text-center">Growth</h3>
+              <div class="text-center mb-6">
+                <span class="text-4xl font-bold">₹50,000</span>
+                <span class="text-gray-500 ml-1">/month</span>
+              </div>
+              <ul class="space-y-3 mb-8 text-left text-gray-600 dark:text-gray-300">
+                <li>✅ 4 social platforms</li>
+                <li>✅ 24 posts per month</li>
+                <li>✅ Advanced analytics</li>
+                <li>✅ Performance ads (₹20k budget)</li>
+                <li>✅ Priority support</li>
+                <li>✅ Bi-weekly strategy calls</li>
+                <li>✅ Community management</li>
+              </ul>
+              <a
+                href="https://wa.me/919876543210?text=Hi%20Deepanshu%2C%20I'd%20like%20to%20discuss%20the%20Growth%20plan."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block text-center w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all"
+              >
+                Book a Call
+              </a>
+            </div>
+            <div class="relative p-8 rounded-2xl bg-white border border-gray-200 shadow-lg transition-transform hover:-translate-y-2 dark:bg-gray-800 dark:border-gray-700">
+              <h3 class="text-2xl font-bold mb-4 text-center">Custom</h3>
+              <div class="text-center mb-6">
+                <span class="text-4xl font-bold">Let's Talk</span>
+              </div>
+              <ul class="space-y-3 mb-8 text-left text-gray-600 dark:text-gray-300">
+                <li>✅ Unlimited platforms</li>
+                <li>✅ Custom content volume</li>
+                <li>✅ Dedicated account manager</li>
+                <li>✅ Enterprise analytics</li>
+                <li>✅ Full-funnel campaigns</li>
+                <li>✅ Weekly strategy sessions</li>
+                <li>✅ Team training included</li>
+              </ul>
+              <a
+                href="https://wa.me/919876543210?text=Hi%20Deepanshu%2C%20I'm%20interested%20in%20a%20custom%20engagement."
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block text-center w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all"
+              >
+                Schedule Discovery
               </a>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Pricing */}
-      <section id="pricing" className={`py-20 px-4 sm:px-6 lg:px-8 ${darkMode ? 'bg-gray-800/50' : 'bg-gray-50'}`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Investment Options</h2>
-            <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              Choose the right plan for your growth stage
-            </p>
+        <section id="about" class="max-w-4xl mx-auto mb-20">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">About Deepanshu Yadav</h2>
           </div>
-          <div className="grid lg:grid-cols-3 gap-8">
-            {pricingTiers.map((tier, idx) => (
-              <div
-                key={idx}
-                className={`p-8 rounded-2xl relative ${
-                  tier.popular 
-                    ? 'ring-2 ring-blue-600 scale-105 shadow-2xl' + (darkMode ? ' bg-gray-900' : ' bg-white')
-                    : (darkMode ? 'bg-gray-900' : 'bg-white') + ' shadow-lg'
-                }`}
+          <div class="p-8 md:p-12 rounded-2xl bg-gray-50 dark:bg-gray-800">
+            <p class="text-lg mb-6 text-gray-700 dark:text-gray-300">
+              I help ambitious businesses unlock exponential growth through strategic marketing and brand positioning. Based in
+              Rohtak with clients across Delhi-NCR and India, I specialize in the “Domino Effect”—identifying the one strategic
+              lever that cascades into multiple wins.
+            </p>
+            <p class="text-lg mb-6 text-gray-700 dark:text-gray-300">
+              With experience across agency execution and consulting, I blend strategic thinking with hands-on implementation.
+              Whether you're a D2C brand scaling up, a B2B company seeking qualified leads, or a founder building personal
+              authority, I build marketing systems that deliver predictable, measurable growth.
+            </p>
+            <p class="text-lg mb-8 text-gray-700 dark:text-gray-300">
+              My approach is simple: understand your business deeply, identify high-leverage opportunities, execute with
+              precision, and optimize relentlessly. No fluff, no vanity metrics—only results that impact your bottom line.
+            </p>
+            <div class="flex justify-center gap-4">
+              <a
+                href="https://linkedin.com/in/deepanshuyadav"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="p-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors"
               >
-                {tier.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                    Most Popular
-                  </div>
-                )}
-                <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
-                <div className="mb-6">
-                  <span className="text-4xl font-bold">{tier.price}</span>
-                  <span className={darkMode ? 'text-gray-400' : 'text-gray-600'}>{tier.period}</span>
+                LinkedIn
+              </a>
+              <a
+                href="https://twitter.com/deepanshuyadav"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="p-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white transition-colors"
+              >
+                Twitter
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section id="faq" class="max-w-4xl mx-auto mb-20">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+          </div>
+          <div class="space-y-4">
+            <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800" data-faq>
+              <button class="w-full px-6 py-5 flex items-center justify-between text-left text-lg font-semibold" type="button">
+                <span>What industries do you work with?</span>
+                <span class="transition-transform" aria-hidden="true">⌄</span>
+              </button>
+              <div class="hidden px-6 pb-6 text-gray-600 dark:text-gray-300" data-faq-content>
+                I specialize in D2C brands, B2B SaaS, professional services, and local businesses across India. My frameworks
+                adapt to your specific market dynamics.
+              </div>
+            </div>
+            <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800" data-faq>
+              <button class="w-full px-6 py-5 flex items-center justify-between text-left text-lg font-semibold" type="button">
+                <span>How quickly can I expect results?</span>
+                <span class="transition-transform" aria-hidden="true">⌄</span>
+              </button>
+              <div class="hidden px-6 pb-6 text-gray-600 dark:text-gray-300" data-faq-content>
+                Initial traction typically shows in 30-45 days. Significant results (2-3x growth) usually manifest within 3-6
+                months with consistent execution.
+              </div>
+            </div>
+            <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800" data-faq>
+              <button class="w-full px-6 py-5 flex items-center justify-between text-left text-lg font-semibold" type="button">
+                <span>Do you require long-term contracts?</span>
+                <span class="transition-transform" aria-hidden="true">⌄</span>
+              </button>
+              <div class="hidden px-6 pb-6 text-gray-600 dark:text-gray-300" data-faq-content>
+                I offer flexible engagements starting at 3 months to allow for meaningful impact. Month-to-month options are
+                available after the initial period.
+              </div>
+            </div>
+            <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800" data-faq>
+              <button class="w-full px-6 py-5 flex items-center justify-between text-left text-lg font-semibold" type="button">
+                <span>What makes your approach different?</span>
+                <span class="transition-transform" aria-hidden="true">⌄</span>
+              </button>
+              <div class="hidden px-6 pb-6 text-gray-600 dark:text-gray-300" data-faq-content>
+                I focus on the "Domino Effect"—finding the one strategic lever that creates cascading wins. It's about smart
+                execution, not just more activity.
+              </div>
+            </div>
+            <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800" data-faq>
+              <button class="w-full px-6 py-5 flex items-center justify-between text-left text-lg font-semibold" type="button">
+                <span>Do you handle content creation?</span>
+                <span class="transition-transform" aria-hidden="true">⌄</span>
+              </button>
+              <div class="hidden px-6 pb-6 text-gray-600 dark:text-gray-300" data-faq-content>
+                Yes, I deliver full-service content strategy and creation across formats—copywriting, graphics, video direction,
+                and more.
+              </div>
+            </div>
+            <div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800" data-faq>
+              <button class="w-full px-6 py-5 flex items-center justify-between text-left text-lg font-semibold" type="button">
+                <span>What's your typical client engagement like?</span>
+                <span class="transition-transform" aria-hidden="true">⌄</span>
+              </button>
+              <div class="hidden px-6 pb-6 text-gray-600 dark:text-gray-300" data-faq-content>
+                Most clients start with the Growth package, scaling to custom solutions as we prove ROI. I partner with a focused
+                roster of clients to ensure quality.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" class="max-w-6xl mx-auto mb-20">
+          <div class="grid lg:grid-cols-2 gap-12">
+            <div>
+              <h2 class="text-3xl font-bold mb-6">Let’s Build Your Growth Engine</h2>
+              <p class="text-lg mb-6 text-gray-600 dark:text-gray-300">
+                Share a bit about your business and the goals you’re aiming for. I’ll respond within 24 hours to schedule a
+                discovery call.
+              </p>
+              <div class="space-y-4 text-gray-700 dark:text-gray-300">
+                <div class="flex items-center gap-3">
+                  📍<span>Rohtak • Gurugram • Delhi-NCR • Serving clients across India</span>
                 </div>
-                <ul className="space-y-3 mb-8">
-                  {tier.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <Check className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className={darkMode ? 'text-gray-300' : 'text-gray-700'}>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`block text-center py-3 px-6 rounded-xl font-semibold transition-all ${
-                    tier.popular
-                      ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                      : darkMode
-                      ? 'bg-gray-800 hover:bg-gray-700'
-                      : 'bg-gray-100 hover:bg-gray-200'
-                  }`}
-                >
-                  {tier.cta}
-                </a>
+                <div class="flex items-center gap-3">
+                  ☎️<span>+91 98765 43210</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  ✉️<span>deepanshu@ventures.com</span>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
-          </div>
-          <div className="space-y-4">
-            {faqs.map((faq, idx) => (
-              <div
-                key={idx}
-                className={`rounded-xl overflow-hidden ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}
-              >
+            </div>
+            <div class="p-8 rounded-2xl bg-white shadow-xl dark:bg-gray-800 dark:border dark:border-gray-700">
+              <form id="contact-form" class="space-y-5">
+                <div>
+                  <label class="block mb-2 font-semibold" for="contact-name">Name</label>
+                  <input
+                    id="contact-name"
+                    name="name"
+                    required
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:border-gray-700 dark:bg-gray-900"
+                    placeholder="Your name"
+                    type="text"
+                  />
+                </div>
+                <div>
+                  <label class="block mb-2 font-semibold" for="contact-email">Email</label>
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    required
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:border-gray-700 dark:bg-gray-900"
+                    placeholder="you@example.com"
+                  />
+                </div>
+                <div>
+                  <label class="block mb-2 font-semibold" for="contact-phone">Phone</label>
+                  <input
+                    id="contact-phone"
+                    name="phone"
+                    required
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all dark:border-gray-700 dark:bg-gray-900"
+                    placeholder="+91 98765 43210"
+                    type="tel"
+                  />
+                </div>
+                <div>
+                  <label class="block mb-2 font-semibold" for="contact-message">Message</label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    required
+                    rows="4"
+                    class="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none dark:border-gray-700 dark:bg-gray-900"
+                    placeholder="Tell me about your project..."
+                  ></textarea>
+                </div>
                 <button
-                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full px-6 py-4 flex justify-between items-center text-left"
+                  type="submit"
+                  class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all transform hover:scale-[1.02] shadow-lg"
                 >
-                  <span className="font-semibold">{faq.q}</span>
-                  <ChevronDown className={`w-5 h-5 transition-transform ${openFaq === idx ? 'rotate-180' : ''}`} />
+                  Send Message
                 </button>
-                {openFaq === idx && (
-                  <div className={`px-6 pb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Form */}
-      <section id="contact" className={`py-20 px-4 sm:px-6 lg:px-8 ${darkMode ? 'bg-gray-800/50' : 'bg-gray-50'}`}>
-        <div className="max-w-2xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Let's Build Something Great</h2>
-            <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              Ready to transform your marketing? Get in touch.
-            </p>
-          </div>
-          <div className={`p-8 rounded-2xl ${darkMode ? 'bg-gray-900' : 'bg-white'} shadow-xl`}>
-            <form onSubmit={handleFormSubmit} className="space-y-6">
-              <div>
-                <label className="block mb-2 font-semibold">Name</label>
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className={`w-full px-4 py-3 rounded-lg ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-300'} border focus:ring-2 focus:ring-blue-500 outline-none transition-all`}
-                  placeholder="Your name"
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-semibold">Email</label>
-                <input
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className={`w-full px-4 py-3 rounded-lg ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-300'} border focus:ring-2 focus:ring-blue-500 outline-none transition-all`}
-                  placeholder="your@email.com"
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-semibold">Phone</label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className={`w-full px-4 py-3 rounded-lg ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-300'} border focus:ring-2 focus:ring-blue-500 outline-none transition-all`}
-                  placeholder="+91 98765 43210"
-                />
-              </div>
-              <div>
-                <label className="block mb-2 font-semibold">Message</label>
-                <textarea
-                  required
-                  value={formData.message}
-                  onChange={(e) => setFormData({...formData, message: e.target.value})}
-                  rows="4"
-                  className={`w-full px-4 py-3 rounded-lg ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-300'} border focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none`}
-                  placeholder="Tell me about your project..."
-                ></textarea>
-              </div>
-              <button
-                type="submit"
-                className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all transform hover:scale-105 shadow-lg"
+              </form>
+              <div
+                id="contact-success"
+                class="hidden mt-4 p-4 bg-green-500/10 border border-green-500 rounded-lg text-green-600 text-center"
               >
-                Send Message
-              </button>
-            </form>
-            {formStatus === 'success' && (
-              <div className="mt-4 p-4 bg-green-500/10 border border-green-500 rounded-lg text-green-500 text-center">
                 ✓ Message sent! I'll get back to you soon.
               </div>
-            )}
-            <div className="mt-8 pt-8 border-t border-gray-700">
-              <p className="text-center mb-4 font-semibold">Or reach out directly:</p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-all"
-                >
-                  <MessageCircle className="w-5 h-5 mr-2" />
-                  WhatsApp
-                </a>
-                <a
-                  href="mailto:deepanshu@ventures.com"
-                  className={`inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-all ${darkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'}`}
-                >
-                  <Mail className="w-5 h-5 mr-2" />
-                  Email
-                </a>
+              <div class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+                <p class="text-center mb-4 font-semibold text-gray-700 dark:text-gray-300">Or reach out directly:</p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                  <a
+                    href="https://wa.me/919876543210?text=Hi%20Deepanshu%2C%20I'd%20like%20to%20chat%20about%20my%20business%20goals."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center justify-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold transition-all"
+                  >
+                    💬 WhatsApp
+                  </a>
+                  <a
+                    href="mailto:deepanshu@ventures.com"
+                    class="inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-all bg-gray-100 hover:bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                  >
+                    ✉️ Email
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* Footer */}
-      <footer className={`py-12 px-4 sm:px-6 lg:px-8 border-t ${darkMode ? 'border-gray-800 bg-gray-900' : 'border-gray-200 bg-gray-50'}`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
+      <footer class="py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto">
+          <div class="grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="text-xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              <h3 class="text-xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Deepanshu Ventures
               </h3>
-              <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+              <p class="text-gray-600 dark:text-gray-400">
                 Strategic marketing & growth consulting for ambitious businesses across India.
               </p>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Quick Links</h4>
-              <div className="space-y-2">
-                {['services', 'work', 'pricing', 'about', 'contact'].map(item => (
-                  <button
-                    key={item}
-                    onClick={() => scrollToSection(item)}
-                    className={`block capitalize hover:text-blue-600 transition-colors ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}
-                  >
-                    {item}
-                  </button>
-                ))}
+              <h4 class="font-bold mb-4">Quick Links</h4>
+              <div class="space-y-2 text-gray-600 dark:text-gray-400">
+                <button data-scroll="services" class="block capitalize hover:text-blue-600 transition-colors" type="button">
+                  services
+                </button>
+                <button data-scroll="work" class="block capitalize hover:text-blue-600 transition-colors" type="button">
+                  work
+                </button>
+                <button data-scroll="pricing" class="block capitalize hover:text-blue-600 transition-colors" type="button">
+                  pricing
+                </button>
+                <button data-scroll="about" class="block capitalize hover:text-blue-600 transition-colors" type="button">
+                  about
+                </button>
+                <button data-scroll="contact" class="block capitalize hover:text-blue-600 transition-colors" type="button">
+                  contact
+                </button>
               </div>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Connect</h4>
-              <div className="flex gap-4 mb-4">
-                <a href="https://linkedin.com/in/deepanshuyadav" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg hover:bg-blue-600 hover:text-white transition-colors">
-                  <Linkedin className="w-5 h-5" />
+              <h4 class="font-bold mb-4">Connect</h4>
+              <div class="flex gap-4 mb-4 text-gray-600 dark:text-gray-400">
+                <a
+                  href="https://linkedin.com/in/deepanshuyadav"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="p-2 rounded-lg hover:bg-blue-600 hover:text-white transition-colors"
+                >
+                  LinkedIn
                 </a>
-                <a href="https://instagram.com/deepanshuyadav" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg hover:bg-pink-600 hover:text-white transition-colors">
-                  <Instagram className="w-5 h-5" />
+                <a
+                  href="https://instagram.com/deepanshuyadav"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="p-2 rounded-lg hover:bg-pink-600 hover:text-white transition-colors"
+                >
+                  Instagram
                 </a>
-                <a href="https://twitter.com/deepanshuyadav" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg hover:bg-blue-400 hover:text-white transition-colors">
-                  <Twitter className="w-5 h-5" />
+                <a
+                  href="https://twitter.com/deepanshuyadav"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="p-2 rounded-lg hover:bg-blue-400 hover:text-white transition-colors"
+                >
+                  Twitter
                 </a>
-                <a href="https://youtube.com/@deepanshuyadav" target="_blank" rel="noopener noreferrer" className="p-2 rounded-lg hover:bg-red-600 hover:text-white transition-colors">
-                  <Youtube className="w-5 h-5" />
+                <a
+                  href="https://youtube.com/@deepanshuyadav"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="p-2 rounded-lg hover:bg-red-600 hover:text-white transition-colors"
+                >
+                  YouTube
                 </a>
               </div>
-              <div className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                <p className="flex items-center gap-2 mb-2">
-                  <MapPin className="w-4 h-4" />
-                  Rohtak, Gurugram, Delhi-NCR
-                </p>
-                <p className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  +91 98765 43210
-                </p>
+              <div class="text-sm text-gray-600 dark:text-gray-400 space-y-2">
+                <p>📍 Rohtak, Gurugram, Delhi-NCR</p>
+                <p>☎️ +91 98765 43210</p>
               </div>
             </div>
           </div>
-          <div className={`pt-8 border-t ${darkMode ? 'border-gray-800' : 'border-gray-200'} text-center ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-            <p>© {new Date().getFullYear()} Deepanshu Ventures. All rights reserved.</p>
+          <div class="pt-8 border-t border-gray-200 text-center text-gray-600 dark:border-gray-800 dark:text-gray-400">
+            <p>© <span id="copyright-year"></span> Deepanshu Ventures. All rights reserved.</p>
           </div>
         </div>
       </footer>
     </div>
-  );
-}
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const html = document.documentElement;
+        const storedPreference = localStorage.getItem('darkMode');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const initialDark = storedPreference === null ? prefersDark : storedPreference === 'true';
+
+        const setDarkMode = (value, persist = true) => {
+          html.classList.toggle('dark', value);
+          if (persist) {
+            localStorage.setItem('darkMode', value ? 'true' : 'false');
+          }
+        };
+
+        setDarkMode(initialDark, false);
+
+        document.querySelectorAll('[data-toggle-dark]').forEach((button) => {
+          button.addEventListener('click', () => {
+            const next = !html.classList.contains('dark');
+            setDarkMode(next);
+          });
+        });
+
+        const mobileMenu = document.querySelector('[data-mobile-menu]');
+        const menuToggle = document.querySelector('[data-menu-toggle]');
+        if (menuToggle && mobileMenu) {
+          const menuIcon = menuToggle.querySelector('.menu-icon');
+          const closeIcon = menuToggle.querySelector('.close-icon');
+          menuToggle.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.toggle('hidden');
+            if (menuIcon && closeIcon) {
+              if (isHidden) {
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+              } else {
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+              }
+            }
+          });
+
+          window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+              mobileMenu.classList.add('hidden');
+              if (menuIcon && closeIcon) {
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+              }
+            }
+          });
+        }
+
+        const scrollToSection = (target) => {
+          const section = document.getElementById(target);
+          if (section) {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+          if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            if (menuToggle) {
+              const menuIcon = menuToggle.querySelector('.menu-icon');
+              const closeIcon = menuToggle.querySelector('.close-icon');
+              if (menuIcon && closeIcon) {
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+              }
+            }
+          }
+        };
+
+        document.querySelectorAll('[data-scroll]').forEach((button) => {
+          button.addEventListener('click', () => {
+            const target = button.getAttribute('data-scroll');
+            if (target) {
+              scrollToSection(target);
+            }
+          });
+        });
+
+        const testimonials = Array.from(document.querySelectorAll('[data-testimonial]'));
+        let testimonialIndex = 0;
+        const updateTestimonials = () => {
+          testimonials.forEach((card, index) => {
+            card.classList.toggle('hidden', index !== testimonialIndex);
+          });
+        };
+        if (testimonials.length > 0) {
+          updateTestimonials();
+          const prevButton = document.querySelector('[data-prev-testimonial]');
+          const nextButton = document.querySelector('[data-next-testimonial]');
+
+          const rotate = () => {
+            testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+            updateTestimonials();
+          };
+          let timer = setInterval(rotate, 5000);
+
+          const resetTimer = () => {
+            clearInterval(timer);
+            timer = setInterval(rotate, 5000);
+          };
+
+          if (prevButton) {
+            prevButton.addEventListener('click', () => {
+              testimonialIndex = (testimonialIndex - 1 + testimonials.length) % testimonials.length;
+              updateTestimonials();
+              resetTimer();
+            });
+          }
+          if (nextButton) {
+            nextButton.addEventListener('click', () => {
+              testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+              updateTestimonials();
+              resetTimer();
+            });
+          }
+        }
+
+        document.querySelectorAll('[data-faq]').forEach((item) => {
+          const button = item.querySelector('button');
+          const content = item.querySelector('[data-faq-content]');
+          const icon = button ? button.querySelector('span[aria-hidden="true"]') : null;
+          if (button && content) {
+            button.addEventListener('click', () => {
+              const isOpen = !content.classList.contains('hidden');
+              document.querySelectorAll('[data-faq-content]').forEach((el) => el.classList.add('hidden'));
+              document.querySelectorAll('[data-faq] button span[aria-hidden="true"]').forEach((span) => {
+                span.style.transform = 'rotate(0deg)';
+              });
+              if (!isOpen) {
+                content.classList.remove('hidden');
+                if (icon) {
+                  icon.style.transform = 'rotate(180deg)';
+                }
+              }
+            });
+          }
+        });
+
+        const contactForm = document.getElementById('contact-form');
+        const successMessage = document.getElementById('contact-success');
+        if (contactForm && successMessage) {
+          contactForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            contactForm.reset();
+            successMessage.classList.remove('hidden');
+            setTimeout(() => successMessage.classList.add('hidden'), 5000);
+          });
+        }
+
+        const yearTarget = document.getElementById('copyright-year');
+        if (yearTarget) {
+          yearTarget.textContent = String(new Date().getFullYear());
+        }
+      });
+    </script>
+  </body>
+</html>
